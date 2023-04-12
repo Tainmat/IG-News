@@ -32,7 +32,12 @@ export const Post = ({ author, publishedAt, content }) => {
   }
 
   function handleNewCommentChange() {
+    event.target.setCustomValidity('');
     setNewComment(event.target.value);
+  }
+
+  function handleNewCommentInvalid() {
+    event.target.setCustomValidity('O comentário não pode ser vazio');
   }
 
   function deleteComment(commentDeleted) {
@@ -42,6 +47,9 @@ export const Post = ({ author, publishedAt, content }) => {
 
     setComments(commentsWithoutDeletedOne);
   }
+
+  //Variáveis Monitoradas
+  const isNewCommentEmpty = newComment.length === 0;
 
   return (
     <article className={styles.post}>
@@ -84,10 +92,14 @@ export const Post = ({ author, publishedAt, content }) => {
           placeholder="Deixe um comentário"
           onChange={handleNewCommentChange}
           value={newComment}
+          onInvalid={handleNewCommentInvalid}
+          required
         />
 
         <footer>
-          <button type="submit">Publicar</button>
+          <button type="submit" disabled={isNewCommentEmpty}>
+            Publicar
+          </button>
         </footer>
       </form>
 
